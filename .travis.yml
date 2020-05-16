@@ -1,0 +1,40 @@
+language: generic 
+sudo: required
+services:
+  - docker
+# env:
+#   global:
+#     - SHA=$(git rev-parse HEAD)
+#     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+before_install:
+  # - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
+  # - curl https://sdk.cloud.google.com | bash > /dev/null;
+  # - source $HOME/google-cloud-sdk/path.bash.inc
+  # - gcloud components update kubectl
+  # - gcloud auth activate-service-account --key-file service-account.json
+  # - gcloud config set project skilful-berm-214822
+  # - gcloud config set compute/zone us-central1-a
+  # - gcloud container clusters get-credentials multi-cluster
+  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t conmeconte/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true conmeconte/react-test npm test
+
+after_success: 
+  - docker build -t conmeconte/multi-client ./client
+  - docker build -t conmeconte/multi-nginx ./nginx
+  - docker build -t conmeconte/multi-server ./server
+  - docker build -t conmeconte/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin #will echo the pw than insert to stdin of next pipe
+  - docker push conmeconte/multi-client
+  - docker push conmeconte/multi-nginx
+  - docker push conmeconte/multi-server
+  - docker push conmeconte/multi-worker
+  #Take those images and push them to docker hub
+# deploy:
+#   provider: script
+#   script: bash ./deploy.sh
+#   on:
+#     branch: master
