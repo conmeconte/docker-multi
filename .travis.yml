@@ -1,4 +1,4 @@
-language: generic 
+# language: generic 
 sudo: required
 services:
   - docker
@@ -32,7 +32,7 @@ after_success:
   - docker push conmeconte/multi-nginx
   - docker push conmeconte/multi-server
   - docker push conmeconte/multi-worker
-  
+
   #Take those images and push them to docker hub
 # deploy:
 #   provider: script
