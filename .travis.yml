@@ -28,12 +28,12 @@ after_success:
   - docker build -t conmeconte/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin #will echo the pw than insert to stdin of next pipe
+  #Take those images and push them to docker hub
   - docker push conmeconte/multi-client
   - docker push conmeconte/multi-nginx
   - docker push conmeconte/multi-server
   - docker push conmeconte/multi-worker
 
-  #Take those images and push them to docker hub
 # deploy:
 #   provider: script
 #   script: bash ./deploy.sh
