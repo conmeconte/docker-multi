@@ -25,7 +25,7 @@
     {
       "name": "nginx",
       "image": "conmeconte/multi-nginx",
-      "hostname": "worker", 
+      "hostname": "nginx", 
       "essential": true,
       "portMappings": [
         {
