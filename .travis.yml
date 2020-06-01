@@ -34,6 +34,18 @@ after_success:
   - docker push conmeconte/multi-server
   - docker push conmeconte/multi-worker
 
+deploy: 
+  provider: elasticbeanstalk
+  region: us-west-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-us-west-1-603678571591
+  bucket_path: docker-multi
+  on: 
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+
 # deploy:
 #   provider: script
 #   script: bash ./deploy.sh
